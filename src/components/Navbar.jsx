@@ -6,8 +6,14 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   return (
     <div className="flex items-center justify-between font-medium py-5">
-      <img src={assets.logo} alt="logo" />
-      <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
+      <Link to="/">
+        <img
+          src={assets.kapadaalogo}
+          alt="logo"
+          className=" w-55 h-15 sm:w-60 sm:h-18"
+        />
+      </Link>
+      <ul className="hidden md:flex gap-5 text-sm text-gray-700">
         <NavLink to="/" className="flex flex-col items-center gap-1">
           <p>HOME</p>
           <hr className="w-1/2 border-none h-[1.5px] bg-gray-700 hidden" />
@@ -62,7 +68,7 @@ const Navbar = () => {
           onClick={() => setOpen(true)}
           src={assets.menu_icon}
           alt="menu-icon"
-          className="w-5 sm:hidden"
+          className="w-5 md:hidden"
         />
       </div>
       {/* sidebar for small screens */}
@@ -86,28 +92,28 @@ const Navbar = () => {
           <NavLink
             onClick={() => setOpen(false)}
             to="/"
-            className="py-2 pl-6 border uppercase"
+            className="py-2 pl-6  uppercase "
           >
             Home
           </NavLink>
           <NavLink
             onClick={() => setOpen(false)}
             to="/collection"
-            className="py-2 pl-6 border uppercase"
+            className="py-2 pl-6  uppercase"
           >
             Collection
           </NavLink>
           <NavLink
             onClick={() => setOpen(false)}
             to="/about"
-            className="py-2 pl-6 border uppercase"
+            className="py-2 pl-6  uppercase"
           >
             About
           </NavLink>
           <NavLink
             onClick={() => setOpen(false)}
             to="/contact"
-            className="py-2 pl-6 border uppercase"
+            className="py-2 pl-6  uppercase"
           >
             Contact
           </NavLink>
