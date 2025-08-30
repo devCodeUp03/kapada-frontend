@@ -10,12 +10,13 @@ const SortOptions = {
   RELEVANT: "RELEVANT",
 };
 const Collection = () => {
-  const { products } = useContext(ShopContext);
+  const { products, search, showSearch } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [sortBy, setSortBy] = useState(SortOptions.RELEVANT);
+  const [filtered, setFiltered] = useState([]);
 
   const handleSubCategory = (e) => {
     const { checked, value } = e.target;
@@ -37,28 +38,34 @@ const Collection = () => {
   };
 
   useEffect(() => {
-    let filtered = products;
+    let updated = [...products];
+    setFiltered(updated);
     if (categories.length > 0) {
-      filtered = filtered.filter((product) =>
+      updated = filtered.filter((product) =>
         categories.includes(product.category)
       );
     }
 
     if (subCategory.length > 0) {
-      filtered = filtered.filter((product) =>
+      updated = filtered.filter((product) =>
         subCategory.includes(product.subCategory)
       );
     }
 
     if (sortBy == SortOptions.PRICE_HiGH_TO_LOW) {
-      filtered = filtered.sort((a, b) => b.price - a.price);
+      updated = filtered.sort((a, b) => b.price - a.price);
     }
     if (sortBy == SortOptions.PRICE_LOW_TO_HIGH) {
-      filtered = filtered.sort((a, b) => a.price - b.price);
+      updated = filtered.sort((a, b) => a.price - b.price);
+    }
+    if (showSearch && search) {
+      updated = filtered.filter((item) =>
+        item.name.toLowerCase().includes(search.toLowerCase())
+      );
     }
 
-    setFilterProducts(filtered);
-  }, [categories, subCategory, products, sortBy]);
+    setFilterProducts(updated);
+  }, [categories, subCategory, sortBy, search]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 pt-10 border-t">
