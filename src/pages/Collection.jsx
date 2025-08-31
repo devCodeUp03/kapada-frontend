@@ -33,7 +33,7 @@ const Collection = () => {
     if (checked) {
       setCategories([...categories, value]);
     } else {
-      setCategories(categories.filter((cat) => cat != value));
+      setCategories(categories?.filter((cat) => cat != value));
     }
   };
 
@@ -41,31 +41,33 @@ const Collection = () => {
     let updated = [...products];
     setFiltered(updated);
     if (categories.length > 0) {
-      updated = filtered.filter((product) =>
+      updated = updated.filter((product) =>
         categories.includes(product.category)
       );
     }
 
-    if (subCategory.length > 0) {
-      updated = filtered.filter((product) =>
-        subCategory.includes(product.subCategory)
-      );
-    }
-
     if (sortBy == SortOptions.PRICE_HiGH_TO_LOW) {
-      updated = filtered.sort((a, b) => b.price - a.price);
+      updated = updated.sort((a, b) => b.price - a.price);
     }
     if (sortBy == SortOptions.PRICE_LOW_TO_HIGH) {
-      updated = filtered.sort((a, b) => a.price - b.price);
+      updated = updated.sort((a, b) => a.price - b.price);
     }
     if (showSearch && search) {
-      updated = filtered.filter((item) =>
+      updated = updated.filter((item) =>
         item.name.toLowerCase().includes(search.toLowerCase())
       );
     }
 
+    if (subCategory.length > 0) {
+      updated = updated.filter((product) =>
+        subCategory.includes(product.subCategory)
+      );
+    }
+
+    // setFiltered(updated/);
+
     setFilterProducts(updated);
-  }, [categories, subCategory, sortBy, search]);
+  }, [categories, sortBy, search, subCategory]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 pt-10 border-t">
