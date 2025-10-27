@@ -3,11 +3,32 @@ import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
 import { assets } from "../assets/frontend_assets/assets";
 import CartTotal from "../components/CartTotal";
+import { backendUrl } from "../App";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Cart = () => {
-  const { cartItems, products, currency, updateQuantity, navigate } =
+  const { cartItems, currency, updateQuantity, navigate } =
     useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
+  const [products, setProducts] = useState([]);
+  const fetchList = async () => {
+    const response = await axios.get(backendUrl + "/api/product/list");
+    setProducts(response.data.products);
+  };
+
+  let matchedProductLength = 0;
+
+  const checkAndNavigate = () => {
+    if (matchedProductLength === 0) {
+      toast.error("no product to checkout");
+    } else {
+      navigate("/place-order");
+    }
+  };
+  useEffect(() => {
+    fetchList();
+  }, []);
   useEffect(() => {
     const tempData = [];
     for (const items in cartItems) {
@@ -23,6 +44,7 @@ const Cart = () => {
     }
     setCartData(tempData);
   }, [cartItems]);
+
   return (
     <div className="border-t pt-14">
       <div className="text-2xl mb-3">
@@ -34,6 +56,10 @@ const Cart = () => {
           const productData = products.find(
             (product) => product._id === item._id
           );
+
+          matchedProductLength = productData?.length;
+
+
           return (
             <div
               key={idx}
@@ -42,17 +68,17 @@ const Cart = () => {
               <div className="flex items-start gap-6">
                 <img
                   className="w-16 sm:w-20"
-                  src={productData.image[0]}
+                  src={productData?.image[0]}
                   alt=""
                 />
                 <div>
                   <p className="text-xs sm:text-lg font medium">
-                    {productData.name}
+                    {productData?.name}
                   </p>
                   <div className="flex items-center gap-5 mt-2">
                     <p>
                       {currency}
-                      {productData.price}
+                      {productData?.price}
                     </p>
                     <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50">
                       {item.size}
@@ -91,7 +117,7 @@ const Cart = () => {
           <CartTotal />
           <div className="w-full text-end">
             <button
-              onClick={() => navigate("/place-order")}
+              onClick={checkAndNavigate}
               className="bg-black cursor-pointer hover:bg-gray-700
              text-white text-sm my-8 px-8 py-3 "
             >

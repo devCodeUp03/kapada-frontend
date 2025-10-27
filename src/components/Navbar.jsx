@@ -1,11 +1,27 @@
 import React, { useContext, useState } from "react";
 import { assets } from "../assets/frontend_assets/assets";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 
-const Navbar = () => {
+const Navbar = ({ frontendToken, setFrontendToken }) => {
   const { setShowSearch, productCountAddedToCart } = useContext(ShopContext);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const logout = () => {
+    setFrontendToken("");
+    navigate("/login");
+  };
+
+  const handleClickOnProfile = () => {
+    try {
+      if (!frontendToken) {
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
   return (
     <div className="flex items-center justify-between font-medium py-5">
       <Link to="/">
@@ -46,7 +62,7 @@ const Navbar = () => {
         />
 
         <div className="group relative">
-          <Link to="/login">
+          <Link to={`${!frontendToken ? "/login" : "/profile"} `}>
             <img
               src={assets.profile_icon}
               className="w-5 cursor-pointer"
@@ -57,7 +73,14 @@ const Navbar = () => {
             <div className="flex flex-col gap-2 px-5 py-3 w-36 bg-slate-100 text-gray-500 rounded">
               <p className="hover:text-black cursor-pointer">My profile</p>
               <p className="hover:text-black cursor-pointer">Orders</p>
-              <p className="hover:text-black cursor-pointer">Logout</p>
+              <p
+                className={`${
+                  !frontendToken ? "hidden" : "block"
+                } hover:text-black cursor-pointer`}
+                onClick={logout}
+              >
+                Logout
+              </p>
             </div>
           </div>
         </div>

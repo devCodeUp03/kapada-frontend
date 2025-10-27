@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Collection from "./pages/Collection";
@@ -13,24 +13,44 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Searchbar from "./components/Searchbar";
 import { ToastContainer } from "react-toastify";
+import Profile from "./pages/Profile";
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const App = () => {
+  const [frontendToken, setFrontendToken] = useState(
+    localStorage.getItem("frontendToken")
+      ? localStorage.getItem("frontendToken")
+      : ""
+  );
+
+  useEffect(() => {
+    localStorage.setItem("frontendToken", frontendToken);
+  }, [frontendToken]);
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
-      <Navbar />
+      <Navbar
+        frontendToken={frontendToken}
+        setFrontendToken={setFrontendToken}
+      />
       <Searchbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/collection" element={<Collection />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/product/:productId" element={<Product />} />
+        <Route
+          path="/product/:productId"
+          element={<Product frontendToken={frontendToken} />}
+        />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={<Login setFrontendToken={setFrontendToken} />}
+        />
         <Route path="/orders" element={<Orders />} />
         <Route path="/place-order" element={<PlaceOrder />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
       <ToastContainer />

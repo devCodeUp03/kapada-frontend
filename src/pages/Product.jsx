@@ -1,18 +1,33 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/frontend_assets/assets";
 import RelatedProducts from "../components/RelatedProducts";
 import axios from "axios";
 import { backendUrl } from "../App";
+import {toast} from "react-toastify"
 
-const Product = () => {
+
+const Product = ({ frontendToken }) => {
   const { productId } = useParams();
   const { currency, addToCart } = useContext(ShopContext);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
 
+
   const [product, setProduct] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const checkAndAdd = async (_id, size) => {
+    if (frontendToken) {
+      addToCart(_id, size);
+      toast.success("added to the cart")
+      
+    } else {
+      navigate("/login", {state: {from: location.pathname}});
+    }
+  };
   useEffect(() => {
     // setProduct(
     //   products.find((product) => {
@@ -34,7 +49,6 @@ const Product = () => {
     };
     fetchSingle();
   }, [productId]);
-
   return product ? (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
       {/* product data */}
@@ -90,7 +104,7 @@ const Product = () => {
             </div>
           </div>
           <button
-            onClick={() => addToCart(product._id, size)}
+            onClick={() => checkAndAdd(product._id, size)}
             className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer"
           >
             ADD TO CART
