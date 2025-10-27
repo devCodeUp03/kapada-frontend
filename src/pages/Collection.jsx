@@ -3,6 +3,8 @@ import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/frontend_assets/assets";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
+import { backendUrl } from "../App";
+import axios from "axios";
 
 const SortOptions = {
   PRICE_LOW_TO_HIGH: "PRICE_LOW_TO_HIGH",
@@ -10,14 +12,19 @@ const SortOptions = {
   RELEVANT: "RELEVANT",
 };
 const Collection = () => {
-  const { products, search, showSearch } = useContext(ShopContext);
+  const { search, showSearch } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [sortBy, setSortBy] = useState(SortOptions.RELEVANT);
   const [filtered, setFiltered] = useState([]);
+  const [products, setProducts] = useState([]);
 
+  const fetchList = async () => {
+    const response = await axios.get(backendUrl + "/api/product/list");
+    setProducts(response.data.products);
+  };
   const handleSubCategory = (e) => {
     const { checked, value } = e.target;
 
@@ -38,6 +45,10 @@ const Collection = () => {
   };
 
   useEffect(() => {
+    fetchList();
+  }, []);
+
+  useEffect(() => {
     let updated = [...products];
     setFiltered(updated);
     if (categories.length > 0) {
@@ -45,7 +56,6 @@ const Collection = () => {
         categories.includes(product.category)
       );
     }
-
     if (sortBy == SortOptions.PRICE_HiGH_TO_LOW) {
       updated = updated.sort((a, b) => b.price - a.price);
     }
@@ -67,7 +77,7 @@ const Collection = () => {
     // setFiltered(updated/);
 
     setFilterProducts(updated);
-  }, [categories, sortBy, search, subCategory]);
+  }, [categories, sortBy, search, subCategory, products]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 pt-10 border-t">

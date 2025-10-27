@@ -3,25 +3,37 @@ import { useParams } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/frontend_assets/assets";
 import RelatedProducts from "../components/RelatedProducts";
+import axios from "axios";
+import { backendUrl } from "../App";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart } = useContext(ShopContext);
+  const { currency, addToCart } = useContext(ShopContext);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
 
   const [product, setProduct] = useState(false);
   useEffect(() => {
-    setProduct(
-      products.find((product) => {
-        if (product._id === productId) {
-          setImage(product.image[0]);
-          return product;
-        }
-      })
-    );
-  }, [productId]);
+    // setProduct(
+    //   products.find((product) => {
+    //     if (product._id === productId) {
+    //       setImage(product.image[0]);
+    //       return product;
+    //     }
+    //   })
+    // );
 
+    const fetchSingle = async () => {
+      const response = await axios.get(
+        backendUrl + `/api/product/single/${productId}`
+      );
+      if (response.data.success) {
+        setProduct(response.data.product);
+        setImage(response.data.product.image[0]);
+      }
+    };
+    fetchSingle();
+  }, [productId]);
 
   return product ? (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
@@ -77,7 +89,10 @@ const Product = () => {
               ))}
             </div>
           </div>
-          <button onClick={() => addToCart(product._id, size)} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer">
+          <button
+            onClick={() => addToCart(product._id, size)}
+            className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer"
+          >
             ADD TO CART
           </button>
           <hr className="mt-8 sm:w-4/5" />
@@ -115,7 +130,10 @@ const Product = () => {
       </div>
       {/* related products */}
 
-      <RelatedProducts category={product.category} subCategory={product.subCategory} />
+      <RelatedProducts
+        category={product.category}
+        subCategory={product.subCategory}
+      />
     </div>
   ) : (
     <div className="opacity-0"></div>

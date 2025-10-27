@@ -1,9 +1,12 @@
 import React, { useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { Link } from "react-router-dom";
+import { backendUrl } from "../App";
+import axios from "axios"
 
 const ProductItem = ({ id, image, name, price }) => {
   const { currency } = useContext(ShopContext);
+ 
   return (
     <Link className="text-gray-700 cursor-pointer" to={`/product/${id}`}>
       <div className="overflow-hidden">
