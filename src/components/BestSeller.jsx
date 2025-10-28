@@ -4,6 +4,8 @@ import Title from "./Title";
 import ProductItem from "./ProductItem";
 import axios from "axios";
 import { backendUrl } from "../App";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const BestSeller = () => {
   // const {products} = useContext(ShopContext);
@@ -32,15 +34,19 @@ const BestSeller = () => {
         </p>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-        {bestSellers.map((item, idx) => (
-          <ProductItem
-            key={idx}
-            id={item._id}
-            name={item.name}
-            image={item.image}
-            price={item.price}
-          />
-        ))}
+        {bestSellers && bestSellers.length
+          ? bestSellers.map((item, idx) => (
+              <ProductItem
+                key={idx}
+                id={item._id}
+                name={item.name}
+                image={item.image}
+                price={item.price}
+              />
+            ))
+          : [1, 2, 3, 4, 5].map((_, idx) => {
+              return <Skeleton height={320} key={idx} />;
+            })}
       </div>
     </div>
   );

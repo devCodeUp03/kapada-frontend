@@ -4,6 +4,8 @@ import Title from "./Title";
 import ProductItem from "./ProductItem";
 import axios from "axios";
 import { backendUrl } from "../App";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const LatestCollection = () => {
   // const { products } = useContext(ShopContext);
@@ -29,17 +31,21 @@ const LatestCollection = () => {
 
       {/* Rendering latest products */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-        {latestProducts.map((item, idx) => {
-          return (
-            <ProductItem
-              key={idx}
-              id={item._id}
-              image={item.image}
-              name={item.name}
-              price={item.price}
-            />
-          );
-        })}
+        {latestProducts && latestProducts.length > 0
+          ? latestProducts.map((item, idx) => {
+              return (
+                <ProductItem
+                  key={idx}
+                  id={item._id}
+                  image={item.image}
+                  name={item.name}
+                  price={item.price}
+                />
+              );
+            })
+          : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, idx) => {
+              return <Skeleton height={320} key={idx}/>;
+            })}
       </div>
     </div>
   );

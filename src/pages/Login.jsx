@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Login = ({ setFrontendToken }) => {
-  const [currentState, setCurrentState] = useState("Sign Up");
+  const [currentState, setCurrentState] = useState("Login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,6 +39,7 @@ const Login = ({ setFrontendToken }) => {
 
         if (response.data.success) {
           setFrontendToken(response.data.token);
+          navigate("/");
           toast.success("Logged in Successfully");
         } else {
           toast.error("Log In unsuccessfully");

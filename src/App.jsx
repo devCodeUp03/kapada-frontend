@@ -14,15 +14,13 @@ import Footer from "./components/Footer";
 import Searchbar from "./components/Searchbar";
 import { ToastContainer } from "react-toastify";
 import Profile from "./pages/Profile";
-
+import { useContext } from "react";
+import { ShopContext } from "./context/ShopContext";
+import Verify from "./pages/Verify";
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const App = () => {
-  const [frontendToken, setFrontendToken] = useState(
-    localStorage.getItem("frontendToken")
-      ? localStorage.getItem("frontendToken")
-      : ""
-  );
+  const { frontendToken, setFrontendToken } = useContext(ShopContext);
 
   useEffect(() => {
     localStorage.setItem("frontendToken", frontendToken);
@@ -51,6 +49,8 @@ const App = () => {
         <Route path="/orders" element={<Orders />} />
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/verify" element={<Verify />} />
+
       </Routes>
       <Footer />
       <ToastContainer />

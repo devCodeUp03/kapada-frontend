@@ -5,6 +5,7 @@ import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 import { backendUrl } from "../App";
 import axios from "axios";
+import Skeleton from "react-loading-skeleton";
 
 const SortOptions = {
   PRICE_LOW_TO_HIGH: "PRICE_LOW_TO_HIGH",
@@ -192,15 +193,21 @@ const Collection = () => {
         {/* products */}
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-          {filterProducts.map((item, idx) => (
-            <ProductItem
-              key={idx}
-              id={item._id}
-              name={item.name}
-              image={item.image}
-              price={item.price}
-            />
-          ))}
+          {filterProducts && filterProducts.length > 0 ? (
+            filterProducts.map((item, idx) => (
+              <ProductItem
+                key={idx}
+                id={item._id}
+                name={item.name}
+                image={item.image}
+                price={item.price}
+              />
+            ))
+          ) : (
+              Array(20).fill(0).map((_, idx) => (
+                <Skeleton height={320} width={260}  />
+              ))
+          )}
         </div>
       </div>
     </div>
