@@ -104,6 +104,42 @@ const PlaceOrder = () => {
             }
           }
           break;
+        case "esewa":
+          {
+            const responseEsewa = await axios.post(
+              backendUrl + "/api/order/esewa",
+              orderData,
+              { headers: { frontendToken } }
+            );
+            if (responseEsewa.data.success) {
+              // setCartItems({});
+              console.log("Hello, world!");
+              const { esewaURL, esewaData } = responseEsewa.data;
+              // window.location.replace(esewaURL);//this is a get request esewa wants post request so following code
+              console.log(esewaURL);
+
+
+              const form = document.createElement("form");
+              form.method = "POST";
+              form.action = esewaURL;
+
+              Object.entries(esewaData).forEach(([key, value]) => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
+              });
+
+              document.body.appendChild(form);
+              form.submit();
+
+              console.log(esewaData);
+            } else {
+              toast.error(responseEsewa.data.message);
+            }
+          }
+          break;
         default:
           break;
       }
@@ -233,15 +269,15 @@ const PlaceOrder = () => {
               <img className="h-5 m-4" src={assets.stripe_logo} alt="" />
             </div>
             <div
-              onClick={() => setMethod("razor")}
+              onClick={() => setMethod("esewa")}
               className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
             >
               <p
                 className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "razor" ? "bg-green-400" : ""
+                  method === "esewa" ? "bg-green-400" : ""
                 } `}
               ></p>
-              <img className="h-5 m-4" src={assets.razorpay_logo} alt="" />
+              <img className="h-6 m-4 " src={assets.esewa_logo} alt="" />
             </div>
             <div
               onClick={() => setMethod("cod")}
