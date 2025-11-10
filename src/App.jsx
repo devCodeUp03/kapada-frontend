@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import { useContext } from "react";
 import { ShopContext } from "./context/ShopContext";
 import Verify from "./pages/Verify";
+import Esewa from "./pages/Esewa";
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const App = () => {
@@ -50,6 +51,7 @@ const App = () => {
         <Route path="/place-order" element={<PlaceOrder />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/verify" element={<Verify />} />
+        <Route path="/verify-esewa" element={<Esewa />} />
 
       </Routes>
       <Footer />
