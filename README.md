@@ -5,6 +5,15 @@ It serves as the client-side interface of the Kapada project — a platform for 
 
 ---
 
+
+## 🌐 Live Server
+
+🔗 **Deployed API URL:** [Deployed Here](https://kapada-frontend.vercel.app)  
+
+
+---
+
+
 ## 🚀 Features
 
 - ⚡ Built with **React 19** and **Vite** for fast development and optimized builds  
