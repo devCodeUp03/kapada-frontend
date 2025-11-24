@@ -15,7 +15,7 @@ const Contact = () => {
         <div className="w-full md:max-w-[450px] relative">
       {/* Skeleton */}
       {!loaded && (
-        <div className="w-full h-[300px] md:h-[350px] bg-gray-300 rounded-md"></div>
+        <div className="w-full h-[400px] md:h-[450px] bg-gray-200 rounded-md"></div>
       )}
 
       {/* Actual Image */}
