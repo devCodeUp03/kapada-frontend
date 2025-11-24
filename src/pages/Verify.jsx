@@ -23,6 +23,7 @@ const Verify = () => {
         { success, orderId },
         { headers: { frontendToken } }
       );
+      
       if (response.data.success) {
         setCartItems({});
         navigate("/orders");

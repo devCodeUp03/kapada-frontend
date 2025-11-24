@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Title from "../components/Title";
 import { assets } from "../assets/frontend_assets/assets.js";
 import NewsletterBox from "../components/NewsletterBox"
 
 const About = () => {
+  const [loaded, setLoaded] = useState(false);
   return (
     <div>
       <div className="text-2xl text-center pt-8 border-t">
@@ -11,11 +12,20 @@ const About = () => {
       </div>
 
       <div className="my-10 flex flex-col md:flex-row gap-16">
-        <img
-          className="w-full md:max-w-[450px]"
-          src={assets.about_img}
-          alt=""
-        />
+        <div className="w-full md:max-w-[450px] relative">
+      {/* Skeleton */}
+      {!loaded && (
+        <div className="w-full h-[300px] md:h-[350px] bg-gray-300 rounded-md"></div>
+      )}
+
+      {/* Actual Image */}
+      <img
+        className={`w-full md:max-w-[450px] ${loaded ? "block" : "hidden"}`}
+        src={assets.about_img}
+        alt="About"
+        onLoad={() => setLoaded(true)}
+      />
+    </div>
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-600">
           <p>
             At Kapada, we bring fashion for everyone—men, women, and kids. Our

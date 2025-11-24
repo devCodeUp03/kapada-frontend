@@ -13,6 +13,7 @@ const Login = ({ setFrontendToken }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from || "/";
+  
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
